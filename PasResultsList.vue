@@ -1,6 +1,6 @@
 <template>
   <i-content>
-    <i-table v-if="isShowTable" :columns="getSourceTableColunms" :data="currentTable.data" :loading="currentTable.loading"/>
+    <i-table v-if="isShowTable" :columns="getSourceTableColunms" :data="currentTable.data" :loading="currentTable.loading" size="small"/>
   </i-content>
 </template>
 
@@ -31,9 +31,7 @@ export default {
   },
   data () {
     return {
-      pasResultsData: null,
       currentTable: {
-        name: 'source',
         data: null,
         loading: true
       }, // 当前表格数据
@@ -47,10 +45,9 @@ export default {
   },
   methods: {
     // 调用接口获取PAS结果文件列表数据
-    getPasResultsData (filePath, currentTableName) {
+    getPasResultsData (filePath) {
       this.currentTable.loading = true
       filePath = filePath || this.pasQueryParams.filePath
-      currentTableName = currentTableName || 'source'
 
       let xhr = new XMLHttpRequest()
       xhr.timeout = 6000
@@ -65,28 +62,12 @@ export default {
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
           this.currentTable.loading = false
-          this.currentTable.name = currentTableName
           this.currentTable.data = JSON.parse(xhr.responseText).result
         }
       }
       xhr.send(null)
     },
-    showDetailInfo (index) {
-      const currentTableName = this.currentTable.name
-      let filePath = this.pasQueryParams.filePath
-      switch (currentTableName) {
-        case 'source':
-          filePath = this.currentTable.data[index].path
-          this.getPasResultsData(filePath, 'sourceDetail')
-          break
-        case 'sourceDetail':
-          filePath = this.currentTable.data[index].path
-          this.getPasResultsData(filePath, 'sourceDetailItems')
-          break
-        default:
-          break
-      }
-    },
+    // 文件下载
     exportFile (index) {
       let filePath = this.currentTable.data[index].path
       let fileName = this.currentTable.data[index].name
@@ -155,28 +136,31 @@ export default {
                 h(Avatar, {
                   props: {
                     src: this.getIcon(params.row.name),
-                    shape: 'square'
+                    shape: 'square',
+                    size: 'small'
                   },
                   style: {
                     marginRight: '10px',
-                    cursor: this.currentTable.name !== 'sourceDetailItems' ? 'pointer' : 'default'
+                    cursor: this.isFolder(params.row.name) ? 'pointer' : 'default'
                   },
                   on: {
                     click: () => {
-                      this.showDetailInfo(params.index)
+                      if (!this.isFolder(params.row.name)) return
+                      this.getPasResultsData(params.row.path)
                     }
                   }
                 }),
                 h(
-                  this.currentTable.name !== 'sourceDetailItems' ? 'a' : 'span',
+                  this.isFolder(params.row.name) ? 'a' : 'span',
                   {
                     style: {
                       alignSelf: 'center',
-                      cursor: this.currentTable.name !== 'sourceDetailItems' ? 'pointer' : 'default'
+                      cursor: this.isFolder(params.row.name) ? 'pointer' : 'default'
                     },
                     on: {
                       click: () => {
-                        this.showDetailInfo(params.index)
+                        if (!this.isFolder(params.row.name)) return
+                        this.getPasResultsData(params.row.path)
                       }
                     }
                   },
@@ -212,10 +196,3 @@ export default {
   }
 }
 </script>
-
-<style lang="css" scoped>
-.ivu-table-row .ivu-avatar {
-  width: 16px !important;
-  height: 16px !important;
-}
-</style>
