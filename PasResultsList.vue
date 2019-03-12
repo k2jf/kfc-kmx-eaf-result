@@ -13,7 +13,7 @@
 import { Content, Avatar, Table } from 'iview'
 import SourceCellRender from './components/SourceCellRender.vue'
 
-import { api } from '@/api/auth'
+import { api } from './api'
 
 import FOLDER from './static/FOLDER.png'
 import CSV from './static/CSV.png'
