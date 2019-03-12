@@ -151,25 +151,11 @@ export default {
       let filePath = this.currentTable.data[index].path
       let fileName = this.currentTable.data[index].name
       let url = `${api.pasDownload}?filePath=${filePath}&fileName=${fileName}`
-      this.$axios({
-        method: 'get',
-        url: url,
-        responseType: 'arraybuffer',
-        withCredentials: true,
-        maxRedirects: 0,
-        headers: {
-          downloadHeader: true
-        }
-      }).then(res => {
-        let name = res.headers['content-disposition'].split('=')[1]
-        const url = window.URL.createObjectURL(new Blob([res.data]))
-        const link = document.createElement('a')
-        link.href = url
-        link.setAttribute('download', name)
-        document.body.appendChild(link)
-        link.click()
-      })
-      // window.open(url)
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', fileName)
+      document.body.appendChild(link)
+      link.click()
     },
     // 根据后缀名获取文件图标
     getIcon (fileName) {
