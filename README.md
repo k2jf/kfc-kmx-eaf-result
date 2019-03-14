@@ -8,26 +8,26 @@ youli
 
 | 属性        | 说明     | 类型   | 默认值 |
 | ----------- | -------- | ------ | ------ |
-| pasQueryParams | 请求参数 | Object | -      |
+| filePath | 请求参数 | String | -      |
+| expand | 请求参数 | Boolean | -      |
 
 ## 示例
 ```
 <template>
-    <PasResultsList :pasQueryParams="pasQueryParams"></PasResultsList>
+    <PasResultsList :filePath="filePath" :expand="expand"></PasResultsList>
 </template>
 
 <script>
     import PasResultsList from '@/components/kfc-pas-results-list'
+
+    export default {
     components: {
         PasResultsList
     },
-    export default {
     data () {
         return {
-        pasQueryParams: {
           filePath: '/test-lxt/102282/31284/20190226140308149/EXTRACTION',
           expand: false
-        }
         }
     },
     }

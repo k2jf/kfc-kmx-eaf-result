@@ -29,14 +29,15 @@ export default {
     'i-content': Content
   },
   props: {
-    pasQueryParams: {
-      type: Object,
+    filePath: {
+      type: String,
+      required: true
+    },
+    expand: {
+      type: Boolean,
       required: false,
       default () {
-        return {
-          filePath: '/test-lxt/102282/31284/20190226140308149/EXTRACTION',
-          expand: false
-        }
+        return false
       }
     }
   },
@@ -47,8 +48,7 @@ export default {
         loading: true
       }, // 当前表格数据
       isShowTable: false,
-      fileTypes: ['zip', 'pdf', 'xls', 'txt', 'doc', 'csv'],
-      token: 'eyJjdHkiOiJKV1QiLCJlbmMiOiJBMTkyQ0JDLUhTMzg0IiwiYWxnIjoiZGlyIn0..K09zHAVbgBDJLugW2TsKhg.ImY4y0pxJw1buidfWO6W7p7xwf7TxdOhBfndlPWhoCfcK7ggiqAj5qyWiMXCHbTr4scEGmzv1kROmGKJaNvX-aVFnEsnXSdjCjtfHT_GX-e0MSBWKfsfOgCtuLznXk5wcVK0BFf1mQXOQUS74JWmTNK9OGfRqyKwAm_iwI3CBz46OFgZ3H53VhXZZhLM1N-Uz0FRtgZ8JtIAL_CIP5ZcMotSH7OgCRWNanIT6s5b8JXBaHOcjM1qkzPlY0kSuNlm.ZlizGrSVV40yJEvnTMdFQsc_lyxPW7v0'
+      fileTypes: ['zip', 'pdf', 'xls', 'txt', 'doc', 'csv']
     }
   },
   computed: {
@@ -139,9 +139,9 @@ export default {
     // 调用接口获取PAS结果文件列表数据
     getPasResultsData (filePath) {
       this.currentTable.loading = true
-      filePath = filePath || this.pasQueryParams.filePath
+      filePath = filePath || this.filePath
 
-      this.$axios.get(`${api.pasService}?filePath=${filePath}&expand=${this.pasQueryParams.expand}`).then(res => {
+      this.$axios.get(`${api.pasService}?filePath=${filePath}&expand=${this.expand}`).then(res => {
         this.currentTable.loading = false
         this.currentTable.data = res.data.result
       })
