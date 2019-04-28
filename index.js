@@ -1,3 +1,3 @@
-import PasResultsList from './PasResultsList.vue'
+import EafResultList from './EafResultList.vue'
 
-export default PasResultsList
+export default EafResultList

@@ -1,7 +1,7 @@
 # kfc-kmx-eaf-result
 
 ## 功能
-用于展示PAS结果文件列表
+用于展示eaf结果文件列表
 
 ## 维护者
 youli
@@ -14,15 +14,15 @@ youli
 ## 示例
 ```
 <template>
-    <PasResultsList :filePath="filePath" :expand="expand"></PasResultsList>
+    <EafResultList :filePath="filePath" :expand="expand"></EafResultList>
 </template>
 
 <script>
-    import PasResultsList from '@/components/kfc-kmx-eaf-result'
+    import EafResultList from '@/components/kfc-kmx-eaf-result'
 
     export default {
     components: {
-        PasResultsList
+        EafResultList
     },
     data () {
         return {

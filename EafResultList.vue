@@ -23,7 +23,7 @@ import WORD from './static/WORD.png'
 import ZIP from './static/ZIP.png'
 
 export default {
-  name: 'PasResultsList',
+  name: 'EafResultList',
   components: {
     'i-table': Table,
     'i-content': Content
@@ -80,7 +80,7 @@ export default {
                   on: {
                     click: () => {
                       if (!this.isFolder(params.row.name)) return
-                      this.getPasResultsData(params.row.path)
+                      this.getEafResultData(params.row.path)
                     }
                   }
                 }),
@@ -94,7 +94,7 @@ export default {
                     on: {
                       click: () => {
                         if (!this.isFolder(params.row.name)) return
-                        this.getPasResultsData(params.row.path)
+                        this.getEafResultData(params.row.path)
                       }
                     }
                   },
@@ -133,15 +133,15 @@ export default {
     }
   },
   created () {
-    this.getPasResultsData()
+    this.getEafResultData()
   },
   methods: {
-    // 调用接口获取PAS结果文件列表数据
-    getPasResultsData (filePath) {
+    // 调用接口获取EAF结果文件列表数据
+    getEafResultData (filePath) {
       this.currentTable.loading = true
       filePath = filePath || this.filePath
 
-      this.$axios.get(`${api.pasService}?filePath=${filePath}&expand=${this.expand}`).then(res => {
+      this.$axios.get(`${api.eafService}?filePath=${filePath}&expand=${this.expand}`).then(res => {
         this.currentTable.loading = false
         this.currentTable.data = res.data.result
       })
@@ -150,7 +150,7 @@ export default {
     exportFile (index) {
       let filePath = this.currentTable.data[index].path
       let fileName = this.currentTable.data[index].name
-      let url = `${api.pasDownload}?filePath=${filePath}&fileName=${fileName}`
+      let url = `${api.eafDownload}?filePath=${filePath}&fileName=${fileName}`
       const link = document.createElement('a')
       link.href = url
       link.setAttribute('download', fileName)
